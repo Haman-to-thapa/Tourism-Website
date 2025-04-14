@@ -7,6 +7,7 @@ import snow from '../../assets/snow.jpg'
 import temple from '../../assets/temple.jpg'
 import { IoIosMore } from "react-icons/io"
 
+
 const card = [
   {
     place: "Sriki River",
@@ -30,29 +31,10 @@ const card = [
   }
 ]
 
-
-const HomeFeatures = () => {
-
-  const navigate = useNavigate()
+const SearchPlace = () => {
 
   return (
     <div>
-      {/* Background Section */}
-      <div
-        className="bg-cover bg-center relative h-[500px] flex items-center justify-center text-white shadow-2xl"
-        style={{
-          backgroundImage: `url(${bodak})`,
-          backgroundColor: '#334c39',
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40"></div>
-        <Link to="/about">
-          <h2 className="relative text-3xl md:text-4xl font-bold text-white z-10 hover:scale-110 duration-500 hover:underline">
-            Discover Nature With Us
-          </h2>
-        </Link>
-
-      </div>
 
       {/* Features Section */}
       <div
@@ -86,16 +68,11 @@ const HomeFeatures = () => {
             ))
           }
           {/* Sirki River Card */}
-
-
-        </div>
-        <div className="text-white mt-6" onClick={() => navigate('/search')}>
-          <h1 className='flex items-center justify-center font-bold underline cursor-pointer hover:text-blue-600 hover:scale-105 duration-500 transition-all '>see more <span><IoIosMore /></span></h1>
         </div>
       </div>
     </div >
   )
 }
 
-export default HomeFeatures
 
+export default SearchPlace
