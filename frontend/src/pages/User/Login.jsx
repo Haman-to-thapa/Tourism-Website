@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { Form, Input, Button, Checkbox, Typography, message } from "antd";
 import {
   FacebookFilled,
   TwitterSquareFilled,
@@ -8,15 +8,24 @@ import {
 } from "@ant-design/icons";
 import "antd/dist/reset.css";
 import { useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "@/appRedux/API/authApi";
 
 const { Title, Paragraph, Link } = Typography;
 
 const Login = () => {
 
   const navigate = useNavigate()
+  const [loginUser, { isLoading }] = useLoginUserMutation()
 
   const onFinish = (values) => {
-    console.log("Login Info:", values);
+    try {
+      const res = loginUser(values).unwrap();
+      message.success("Login successful");
+      navigate("/")
+    } catch (error) {
+      console.log(error);
+      message.error("Login failed")
+    }
   };
 
   return (
@@ -97,6 +106,7 @@ const Login = () => {
               htmlType="submit"
               style={{ backgroundColor: "#f15a24", border: "none", width: "100%" }}
               size="large"
+              loading={isLoading}
             >
               Login now
             </Button>

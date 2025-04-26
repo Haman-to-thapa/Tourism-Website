@@ -1,17 +1,28 @@
 import React from "react";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "@/appRedux/API/authApi";
 
 const { Title } = Typography;
 
 
 const Register = () => {
 
+  const [registerUser, { data, isLoading, error }] = useRegisterUserMutation()
+
+
+
 
   const navigate = useNavigate()
 
-  const onFinish = (values) => {
-    console.log("Registration values:", values);
+  const onFinish = async (values) => {
+    try {
+      const res = await registerUser(values).unwrap();
+      console.log("Registeration successful", res);
+      navigate('/login')
+    } catch (error) {
+      console.log("Registeratin failed", error)
+    }
 
   };
 

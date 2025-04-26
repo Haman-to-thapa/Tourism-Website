@@ -7,7 +7,7 @@ password:{type:String, required:true},
 role: {type:String, enum:["newUser","owner"], default:"newUser"},
 enrolledTourism:[
  {
-   type:mongoose.Schema.Types.ObjectId, ref:"Toursim"
+   type:mongoose.Schema.Types.ObjectId, ref:"User"
  }
 ]
 
