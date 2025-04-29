@@ -2,7 +2,7 @@ import { Place } from "../modules/placeSchema.js"
 
 export const createPlaces = async (req, res) => {
 try {
-  const {place, description, image} = req.body;
+  const {place, description, image, price} = req.body;
 
   if(!place || !description) {
     return res.status(404).json({success:false,message:"no places added here"})
@@ -11,6 +11,7 @@ try {
     place,
     description,
     image,
+    price,
     createdBy: req.id,
   })
 

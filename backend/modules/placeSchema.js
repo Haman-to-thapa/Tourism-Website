@@ -5,6 +5,7 @@ const placeSchema = new mongoose.Schema({
   place: { type: String, required: true },
   description: { type: String, required: true },
   image: { type: String },
+  price:{type:Number},
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', 
