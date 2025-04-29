@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, Checkbox, Typography, message } from "antd";
 import {
   FacebookFilled,
@@ -8,23 +8,36 @@ import {
 } from "@ant-design/icons";
 import "antd/dist/reset.css";
 import { useNavigate } from "react-router-dom";
-import { useLoginUserMutation } from "@/appRedux/API/authApi";
+import { useGetMeQuery, useLoginUserMutation } from "@/appRedux/API/authApi";
+import { useDispatch } from "react-redux";
+import { userLoggedIn } from "@/appRedux/featureSlice/Slice";
 
 const { Title, Paragraph, Link } = Typography;
 
 const Login = () => {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [loginUser, { isLoading }] = useLoginUserMutation()
+  const { refetch } = useGetMeQuery()
 
-  const onFinish = (values) => {
+
+
+
+  const onFinish = async (values) => {
     try {
-      const res = loginUser(values).unwrap();
-      message.success("Login successful");
-      navigate("/")
+      const response = await loginUser(values).unwrap();
+      if (response.success) {
+        dispatch(userLoggedIn({
+          user: response.user,
+          sessionCode: response.sessionCode
+        }));
+        await refetch();
+        message.success(`Login successful. Session code: ${response.sessionCode}`);
+        navigate("/");
+      }
     } catch (error) {
-      console.log(error);
-      message.error("Login failed")
+      message.error("Login failed");
     }
   };
 

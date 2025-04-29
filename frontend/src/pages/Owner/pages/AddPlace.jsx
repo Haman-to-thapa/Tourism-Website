@@ -6,22 +6,24 @@ const AddPlace = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
+  const [price, setPrice] = useState('');
 
   const [addPlaces, { isLoading }] = useAddPlacesMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!place || !description) {
+    if (!place || !description || !price) {
       setMessage("Place name and description are required.");
       return;
     }
     try {
-      const res = await addPlaces({ place, description, image }).unwrap();
+      const res = await addPlaces({ place, description, image, price }).unwrap();
 
       setMessage(res.message);
       setPlace("");
       setDescription("");
       setImage("");
+      setPrice("");
     } catch (error) {
       console.log(error); // Corrected
       setMessage("Failed to add place. Please try again.");
@@ -56,6 +58,13 @@ const AddPlace = () => {
             className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={image}
             onChange={(e) => setImage(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
           />
           <button
             type="submit"

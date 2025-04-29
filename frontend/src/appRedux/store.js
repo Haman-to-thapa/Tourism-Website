@@ -2,21 +2,36 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authApi } from './API/authApi';
 import { ownerApi } from './API/ownerApi';
 import { userApi } from './API/userApi';  // Import userApi
+import rootReducer from './featureSlice/routeReducer';
+import {persistReducer} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import persistStore from 'redux-persist/es/persistStore';
+
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist:['auth']
+}
+
+const persistedReducer = persistReducer(persistConfig,rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    [authApi.reducerPath]: authApi.reducer,
-    [ownerApi.reducerPath]: ownerApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,  // Add userApi reducer
-  },
+  reducer: persistedReducer,
+  
   middleware: (defaultMiddleware) =>
-    defaultMiddleware().concat(
+    
+    defaultMiddleware({
+      serializableCheck:{
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      },
+    }).concat(
       authApi.middleware,
       ownerApi.middleware,
       userApi.middleware  // Add userApi middleware
     ),
 });
 
-const initializeApp = async () => {
-  await store.dispatch()
-}
+
+export const persistor = persistStore(store)
+

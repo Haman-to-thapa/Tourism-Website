@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Booking = ({ placeId }) => {
   const [firstName, setFirstName] = useState('');
@@ -11,11 +12,16 @@ const Booking = ({ placeId }) => {
   const [selectedTag, setSelectedTag] = useState('All Places');
   const [isBooked, setIsBooked] = useState(false);
 
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+
   // Available time slots
   const availableSlots = ['9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM', '5:00 PM'];
   const placeTags = ['All Places', 'Popular Destinations', 'Hidden Gems', 'Adventure Spots']; // Tags for the place
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!firstName || !address || !phone || !email || !selectedDate || !selectedTime) {
       alert('Please fill in all fields before booking!');
       return;
@@ -34,6 +40,8 @@ const Booking = ({ placeId }) => {
     });
 
     setIsBooked(true);
+    alert('Booking successful!');
+    navigate(`/search/${id}/book-now/purchase`);
   };
 
   return (

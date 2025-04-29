@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './layout/Layout'
 import Home from './layout/Home'
@@ -14,9 +14,30 @@ import Admin from './pages/Owner/AdminLayout/Admin'
 import OwnerLayout from './pages/Owner/OwnerLayout'
 import AddPlace from './pages/Owner/pages/AddPlace'
 import AllPlaces from './pages/Owner/pages/AllPlaces'
+import BookNow from './pages/BookNow'
+import PurchaseSession from './pages/PurchaseSession'
+import { useDispatch } from 'react-redux'
+import { useGetMeQuery } from './appRedux/API/authApi'
+import { userLoggedIn, userLoggedOut } from './appRedux/featureSlice/Slice'
 
 
 const App = () => {
+
+  const dispatch = useDispatch();
+  const { data, isLoading, isError } = useGetMeQuery();
+
+  useEffect(() => {
+    if (data?.user) {
+      dispatch(userLoggedIn({
+        user: data.user,
+        sessionCode: data.sessionCode
+      }));
+    } else {
+      dispatch(userLoggedOut());
+    }
+  }, [data, isError, dispatch]);
+
+
   return (
 
     <BrowserRouter>
@@ -27,9 +48,12 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/search' element={<SearchPlace />} />
           <Route path='/search/:id' element={<PlaceDetails />} />
+          <Route path='/search/:id/book-now' element={<Booking />} />
+          <Route path='/search/:id/book-now/purchase' element={<PurchaseSession />} />
           <Route path="/date" element={<SelectedDate />} />
           <Route path='/notification' element={<Notification />} />
           <Route path='/contact' element={<ContactUs />} />
+
 
           {/* delete sometimes */}
           <Route path='/booking' element={<Booking />} />

@@ -1,9 +1,11 @@
 import React from 'react'
 import hero from '../../assets/river.jpg'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 const HomeIcon = () => {
 
+
+  const { id } = useParams()
 
   const navigate = useNavigate()
 
@@ -45,10 +47,12 @@ const HomeIcon = () => {
 
         <div className="flex items-center gap-4 mt-6 text-white">
           {/* Learn More Button */}
-          <button className="group bg-blue-700 hover:scale-110 px-6 py-3 rounded-full transition-all duration-300 flex items-center gap-2 hover:bg-blue-800 hover:shadow-md hover:text-white text-white font-bold">
-            Book Now
-            <span className="inline-block transform transition-transform group-hover:translate-x-1">↗</span>
-          </button>
+          <Link to={`/search/${id}/book-now`}>
+            <button className="group bg-blue-700 hover:scale-110 px-6 py-3 rounded-full transition-all duration-300 flex items-center gap-2 hover:bg-blue-800 hover:shadow-md hover:text-white text-white font-bold">
+              Book Now
+              <span className="inline-block transform transition-transform group-hover:translate-x-1">↗</span>
+            </button>
+          </Link>
 
           {/* Contact Button */}
           <button

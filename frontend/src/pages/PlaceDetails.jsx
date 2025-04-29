@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import bridge from '../assets/bridg.jpg'
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import LoaderInfinityLoader from '@/components/LoaderInfityLoader'
 import { useGetPlaceByIdQuery } from '@/appRedux/API/userApi'
@@ -8,17 +8,30 @@ import { useGetPlaceByIdQuery } from '@/appRedux/API/userApi'
 const PlaceDetails = () => {
 
   const { id } = useParams();
+  const { pathname } = useLocation()
 
   const { data, isError, isLoading } = useGetPlaceByIdQuery(id)
   console.log(data)
 
+  const navigate = useNavigate()
+
+
+
+
+  const handleBookNow = () => {
+    navigate(`/search/${id}/book-now`);
+    window.scrollTo(0, 0)
+  }
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
 
   if (isLoading) return <LoaderInfinityLoader />;
   if (isError) return <p>Something went wrong .Place try again later</p>
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 ">
       {/* Bridge Image */}
       <div className="container mx-auto flex flex-col items-center">
         <img
@@ -28,7 +41,7 @@ const PlaceDetails = () => {
         />
 
       </div>
-
+      <p className='text-center p-3 text-lg font-bold'>Price :<span className='text-green-800'> ${data?.price}</span></p>
       {/* Main Content */}
       <div className="mx-6 md:mx-20 mt-20 flex flex-col lg:flex-row gap-10">
         {/* Left Side - Description and Guidelines */}
@@ -95,7 +108,7 @@ const PlaceDetails = () => {
 
           {/* Book Now Button */}
           <div className='mb-10'>
-            <button className="bg-green-600 text-white px-8 py-3 rounded-xl text-lg hover:bg-green-700">
+            <button className="bg-green-600 text-white px-8 py-3 rounded-xl text-lg hover:bg-green-700" onClick={handleBookNow} >
               Book Now
             </button>
           </div>

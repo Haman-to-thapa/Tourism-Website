@@ -4,16 +4,21 @@ import './index.css'
 import App from './App.jsx'
 
 import { Provider } from 'react-redux'
-import { store } from './appRedux/store'
+import { store, persistor } from './appRedux/store'
 import CustomLoader from './components/CustomLoader'
+import { } from 'redux-persist/integration/react'
+import { PersistGate } from 'redux-persist/integration/react'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <CustomLoader>
-        <App />
-      </CustomLoader>
+      <PersistGate loading={null} persistor={persistor}>
+        <CustomLoader>
+          <App />
+        </CustomLoader>
+      </PersistGate>
+
     </Provider>
 
   </StrictMode>,
