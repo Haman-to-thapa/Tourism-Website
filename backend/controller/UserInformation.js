@@ -35,20 +35,7 @@ export const register = async(req, res) => {
 
 export const login = async(req,res) => {
   try {
-    // Check if req.body exists
-    if (!req.body) {
-      // Try to parse from rawBody if available
-      if (req.rawBody) {
-        try {
-          req.body = JSON.parse(req.rawBody);
-        } catch (e) {
-          return res.status(400).json({success:false, message:"Invalid JSON in request body"});
-        }
-      } else {
-        return res.status(400).json({success:false, message:"Request body is missing"});
-      }
-    }
-
+  
     const {email,password} = req.body;
 
     if(!email || !password) {

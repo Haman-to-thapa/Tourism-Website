@@ -7,4 +7,7 @@ router.route('/').get(getAllPlaces)
 router.route('/:id').get(getPlaceById)
 
 
+
+
+
 export default router;

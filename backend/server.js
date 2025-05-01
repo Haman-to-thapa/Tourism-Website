@@ -15,20 +15,18 @@ connectDB()
 
 
 const app = express();
-
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Parse JSON and URL-encoded bodies
-app.use(express.json())
-app.use(express.urlencoded({extended:true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
-app.use(cors(
- {
-  origin: "http://localhost:5173",
-  credentials:true,
-  methods:['GET','POST','PUT','DELETE'],
-  allowedHeaders:['content-type','Authorization']
- }
-))
+
 
 
 
@@ -40,9 +38,13 @@ app.use('/api/users',userRoutes)
 app.use('/api/owner',ownerRoutes)
 app.use('/api/places',placesRoute)
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ success: false, message: "Server error" });
+});
 
-const PORT = process.env.PORT || 1000;
 
+const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => {
-  console.log(`Server started in port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
