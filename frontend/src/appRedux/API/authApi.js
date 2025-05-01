@@ -6,10 +6,14 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 const USER_API = "http://localhost:4040/api/users"
 
 export const authApi = createApi({
-  reducerPath:"authApi",
+  reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl:USER_API,
-    credentials:"include",
+    baseUrl: USER_API,
+    credentials: "include",
+    prepareHeaders: (headers) => {
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    }
 
     
   }),
@@ -52,7 +56,7 @@ export const authApi = createApi({
         
       }),
       providesTags:['User']
-    })
+    }),
   })
 })
 
