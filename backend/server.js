@@ -6,6 +6,7 @@ import connectDB from './config/mongodb.js';
 import userRoutes from './routes/userRoutes.js'
 import ownerRoutes from './routes/ownerRoutes.js'
 import placesRoute from './routes/userSearchRoutes.js'
+import bookingRoute from './routes/bookingRoutes.js'
 
 
 
@@ -37,6 +38,7 @@ app.use(cookieParser())
 app.use('/api/users',userRoutes)
 app.use('/api/owner',ownerRoutes)
 app.use('/api/places',placesRoute)
+app.use('/api/bookings',bookingRoute)
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
