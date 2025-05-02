@@ -6,6 +6,7 @@ import rootReducer from './featureSlice/routeReducer';
 import {persistReducer} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import persistStore from 'redux-persist/es/persistStore';
+import { bookingApi } from './API/bookingApi';
 
 
 const persistConfig = {
@@ -28,7 +29,8 @@ export const store = configureStore({
     }).concat(
       authApi.middleware,
       ownerApi.middleware,
-      userApi.middleware  // Add userApi middleware
+      userApi.middleware,
+      bookingApi.middleware,  // Add userApi middleware
     ),
 });
 

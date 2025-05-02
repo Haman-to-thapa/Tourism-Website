@@ -53,22 +53,11 @@ const App = () => {
               <Booking />
             </ProtectedRoute>
           } />
-          <Route path='/search/:id/book-now/purchase' element={
-            <ProtectedRoute>
-              <PurchaseSession />
-            </ProtectedRoute>
-          } />
+          <Route path='/search/:id/book-now/purchase' element={<PurchaseSession />} />
+
           <Route path="/date" element={<SelectedDate />} />
           <Route path='/notification' element={<Notification />} />
           <Route path='/contact' element={<ContactUs />} />
-
-
-          {/* delete sometimes */}
-          <Route path='/booking' element={
-            <ProtectedRoute>
-              <Booking />
-            </ProtectedRoute>
-          } />
 
 
         </Route>

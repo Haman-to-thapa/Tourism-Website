@@ -8,6 +8,7 @@ import { store, persistor } from './appRedux/store'
 import CustomLoader from './components/CustomLoader'
 import { } from 'redux-persist/integration/react'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Toaster } from 'react-hot-toast'
 
 
 createRoot(document.getElementById('root')).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <PersistGate loading={null} persistor={persistor}>
         <CustomLoader>
           <App />
+          <Toaster position='top-center' toastOptions={{ duration: 3000 }} />
         </CustomLoader>
       </PersistGate>
 

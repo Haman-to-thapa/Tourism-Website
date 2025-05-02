@@ -1,4 +1,6 @@
+import { useCreateBookingMutation } from '@/appRedux/API/bookingApi';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Booking = ({ placeId }) => {
@@ -17,31 +19,58 @@ const Booking = ({ placeId }) => {
   const navigate = useNavigate();
 
 
+  const [createBooking, { isLoading }] = useCreateBookingMutation()
+
   // Available time slots
   const availableSlots = ['9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM', '5:00 PM'];
   const placeTags = ['All Places', 'Popular Destinations', 'Hidden Gems', 'Adventure Spots']; // Tags for the place
 
   const handleBooking = async () => {
     if (!firstName || !address || !phone || !email || !selectedDate || !selectedTime) {
-      alert('Please fill in all fields before booking!');
+      toast.error('Please fill in all fields before booking!');
       return;
     }
 
-    // Here you can handle the API call to send the booking details to the backend.
-    console.log({
-      firstName,
-      address,
-      phone,
-      email,
-      selectedTag,
-      selectedDate,
-      selectedTime,
-      feedback,
-    });
+    try {
+      const bookingData = {
+        placeId: id || placeId,
+        firstName,
+        address,
+        phone,
+        email,
+        selectedDate,
+        selectedTime,
+        selectedTag,
+        feedback
+      };
 
-    setIsBooked(true);
-    alert('Booking successful!');
-    navigate(`/search/${id}/book-now/purchase`);
+      console.log("Submitting booking data:", bookingData);
+
+      const response = await createBooking(bookingData).unwrap();
+      console.log("Booking response:", response);
+
+      if (response.success) {
+        setIsBooked(true);
+        toast.success("Booking successful");
+
+        // Store the complete booking data from the response
+        const completeBooking = response.booking;
+        console.log("Received booking from server:", completeBooking);
+
+        // Save to localStorage with a clear key
+        localStorage.setItem('currentBooking', JSON.stringify(completeBooking));
+
+        // Navigate with the booking data in state
+        navigate(`/search/${id}/book-now/purchase`, {
+          state: { booking: completeBooking }
+        });
+      } else {
+        toast.error('Booking failed: ' + response.message);
+      }
+    } catch (error) {
+      console.log("Booking error:", error);
+      toast.error("Booking failed: " + (error.data?.message || 'Unknown error'));
+    }
   };
 
   return (
